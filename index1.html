@@ -1,0 +1,261 @@
+<!--
+Hotel Khojo - Gujarat Edition
+Single-file HTML (ready-to-paste)
+Instructions:
+1) Save this file as `index.html`.
+2) Replace placeholders: <!-- AFFILIATE_LINK_HERE --> and CONTACT_EMAIL_HERE as needed.
+3) To host free: push to a GitHub repo named username.github.io or drag-drop to Netlify.
+4) To edit later: open index.html in any code editor and change text/images/links.
+
+Dynamic tagline rotates through the lines you provided. Theme: modern dark. Destinations: Dwarka, Somnath, Palitana, Dakor, Ambaji.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hotel Khojo — Gujarat Edition</title>
+  <meta name="description" content="Khojo. Book Karo. Chill Karo. — Find the best stays near Gujarat's top religious places.">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <style>
+    /* Reset + base */
+    :root{
+      --bg:#071028; --card:#0d2540; --muted:#9db0c8; --accent:#6ad1ff; --glass: rgba(255,255,255,0.04);
+      --maxw:1100px; --radius:14px; --gap:18px;
+      --fade-duration:700ms;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#e6f0fb;background:radial-gradient(1200px 600px at 10% 10%, rgba(58,120,165,0.12), transparent 10%), var(--bg);-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--maxw);margin:32px auto;padding:20px}
+
+    /* Header / Nav */
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#06263a,#08344d);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(8,20,40,0.6)}
+    .brand h1{margin:0;font-size:20px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    nav{display:flex;gap:12px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:14px}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:18px;box-shadow:0 8px 30px rgba(2,8,20,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .hero h2{margin:0 0 12px 0;font-size:28px}
+    .tagline{font-size:20px;color:var(--accent);min-height:36px}
+    .sub{color:var(--muted);margin-top:10px}
+
+    /* Search / buttons */
+    .controls{display:flex;gap:10px;margin-top:18px}
+    .search{flex:1;padding:12px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);color: #d8eefb}
+    .cta{padding:12px 16px;border-radius:12px;background:linear-gradient(90deg,var(--accent),#4bb1ff);color:#001827;font-weight:700;border:none;cursor:pointer}
+
+    /* Right column */
+    .right-card{padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .small{font-size:13px;color:var(--muted)}
+    .affiliate{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .aff-btn{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));display:flex;justify-content:space-between;align-items:center}
+
+    /* Destinations grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:10px}
+    .card img{width:100%;height:120px;object-fit:cover;border-radius:10px}
+    .card h3{margin:0;font-size:16px}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+    .card .row{display:flex;justify-content:space-between;align-items:center}
+
+    footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* animations */
+    .fade-in{animation:fadeIn var(--fade-duration) ease both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    /* tagline transition */
+    .tagline-rotator{position:relative;height:44px;overflow:hidden}
+    .tagline-rotator .line{position:absolute;left:0;right:0;top:0;opacity:0;transform:translateY(6px);transition:all 600ms cubic-bezier(.2,.9,.3,1);display:flex;align-items:center;gap:10px}
+    .tagline-rotator .line.active{opacity:1;transform:none}
+
+    /* responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.grid{grid-template-columns:repeat(2,1fr)}.brand h1{font-size:18px}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}.hero{gap:12px}.right-card{order:3}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">KH</div>
+        <div>
+          <h1>Hotel Khojo</h1>
+          <p>Gujarat Edition — Religious Stays</p>
+        </div>
+      </div>
+      <nav>
+        <a class="btn" href="#dest">Destinations</a>
+        <a class="btn" href="#how">How it works</a>
+        <a class="btn" href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-card fade-in">
+        <h2>Find Trusted Stays near Gujarat's Holy Places</h2>
+        <div class="tagline">
+          <div class="tagline-rotator" id="rotator">
+            <!-- Lines inserted by JS -->
+            <div class="line">Khojo. Book Karo. Chill Karo. 😎</div>
+            <div class="line">Hotels Khojne Ka Naya Tareeka! 🏨</div>
+            <div class="line">Stay Smart, Stay Local – Hotel Khojo! 🌍</div>
+            <div class="line">From Kutch to Kevadia, Stay Khojo Style! 🇮🇳</div>
+            <div class="line">Jahan Comfort Mile, Wahan Hotel Khojo! 💫</div>
+            <div class="line">Gujarat Ki Stay Revolution – Hotel Khojo! 🚀</div>
+            <div class="line">Apka Room, Hamari Responsibility! 🛏️</div>
+          </div>
+        </div>
+        <p class="sub">Compare prices. Open affiliate links. Book on your favourite platform. All Gujarat religious destinations in one place.</p>
+
+        <div class="controls">
+          <input class="search" placeholder="Search city or temple (e.g. Dwarka)" id="searchInput">
+          <button class="cta" id="searchBtn">Search</button>
+        </div>
+
+        <p class="small" style="margin-top:12px">Pro tip: Click "View on Booking" to go to affiliate partner and complete booking. We show top recommended hotels & price comparisons.</p>
+      </div>
+
+      <aside class="right-card fade-in">
+        <div>
+          <div class="small">Top partners</div>
+          <div class="affiliate">
+            <!-- Affiliate buttons: replace hrefs with your affiliate links -->
+            <a class="aff-btn" href="<!-- BOOKING_AFFILIATE_LINK -->" target="_blank" rel="noopener">
+              <span>Booking.com</span>
+              <small>View on Booking</small>
+            </a>
+            <a class="aff-btn" href="<!-- AGODA_AFFILIATE_LINK -->" target="_blank" rel="noopener">
+              <span>Agoda</span>
+              <small>View on Agoda</small>
+            </a>
+            <a class="aff-btn" href="<!-- EXPEDIA_AFFILIATE_LINK -->" target="_blank" rel="noopener">
+              <span>Expedia / Partner</span>
+              <small>View</small>
+            </a>
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="small">Why Hotel Khojo?</div>
+            <ul style="color:var(--muted);padding-left:18px;margin-top:8px">
+              <li>Focused on Gujarat — curated religious stays</li>
+              <li>Quick compare with major OTAs</li>
+              <li>Mobile-first, fast & free to use</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Destinations -->
+    <section id="dest">
+      <h2 style="color:var(--accent);margin-top:28px">Top Religious Destinations — Gujarat</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1547082299-de196ea013d6?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7b3d5d0f1a3c9a8f4d8b2c1b3e7f2e6a" alt="Dwarka">
+          <h3>Dwarka</h3>
+          <p>Coastal pilgrim city — Dwarkadhish Temple & seafront stays.</p>
+          <div class="row"><span class="small">Starting from ₹799*</span><a class="small" href="<!-- BOOKING_LINK_DWARKA -->">View hotels →</a></div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1582719478250-5fcc5a1f0d2b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b3b5d0a7e1a3c9d4b8f2c9a8b1d3f4e" alt="Somnath">
+          <h3>Somnath</h3>
+          <p>Historic Somnath Temple near the Arabian Sea — spiritual stays nearby.</p>
+          <div class="row"><span class="small">Starting from ₹699*</span><a class="small" href="<!-- BOOKING_LINK_SOMNATH -->">View hotels →</a></div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a3f5c6d0e1c2b9f3d4e5a6b7c8d9e0f" alt="Palitana">
+          <h3>Palitana</h3>
+          <p>Famous Jain pilgrimage — hill-top temples and peaceful stays.</p>
+          <div class="row"><span class="small">Starting from ₹899*</span><a class="small" href="<!-- BOOKING_LINK_PALITANA -->">View hotels →</a></div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1533777324565-a040eb52fac2?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f" alt="Dakor">
+          <h3>Dakor</h3>
+          <p>Famous for Ranchhodraiji Temple — ideal for short spiritual getaways.</p>
+          <div class="row"><span class="small">Starting from ₹599*</span><a class="small" href="<!-- BOOKING_LINK_DAKOR -->">View hotels →</a></div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1544547260-7b0c3d6f1f0c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d" alt="Ambaji">
+          <h3>Ambaji</h3>
+          <p>Popular hill shrine — comfortable guesthouses & family stays nearby.</p>
+          <div class="row"><span class="small">Starting from ₹749*</span><a class="small" href="<!-- BOOKING_LINK_AMBAJI -->">View hotels →</a></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="how" style="margin-top:26px">
+      <h3 style="color:var(--accent)">How it works</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px">
+        <div class="card" style="flex:1;min-width:220px">
+          <h4>1. Search</h4>
+          <p class="small">Search for a city or temple in Gujarat.</p>
+        </div>
+        <div class="card" style="flex:1;min-width:220px">
+          <h4>2. Compare</h4>
+          <p class="small">We show top OTA options — click to view on partner site.</p>
+        </div>
+        <div class="card" style="flex:1;min-width:220px">
+          <h4>3. Book</h4>
+          <p class="small">Complete booking on the partner site. You get the best available rate.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:26px">
+      <div class="card">
+        <h3>Contact / Register a property</h3>
+        <p class="small">Want your hotel listed? Email us at <strong>CONTACT_EMAIL_HERE</strong> or add details later. (Placeholder)</p>
+        <p class="small">Affiliate IDs / contact details can be updated in the HTML where noted.</p>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <strong>Hotel Khojo</strong> — Gujarat Edition • Built with ❤️ for pilgrims & travelers</div>
+      <div style="margin-top:6px;color:var(--muted)">Disclaimer: Prices shown are indicative. Actual booking happens on partner websites.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Tagline rotator
+    (function(){
+      const rot = document.getElementById('rotator');
+      const lines = Array.from(rot.querySelectorAll('.line'));
+      let idx = 0;
+      const show = i => {
+        lines.forEach((el, j)=> el.classList.toggle('active', i===j));
+      }
+      show(idx);
+      setInterval(()=>{ idx = (idx+1)%lines.length; show(idx); }, 3000);
+    })();
+
+    // Simple search stub: scroll to first matched destination
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      if(!q){ alert('Type city or temple name (e.g. Dwarka)'); return }
+      const cards = document.querySelectorAll('#dest .card h3');
+      for(const h of cards){ if(h.textContent.toLowerCase().includes(q)){ h.scrollIntoView({behavior:'smooth', block:'center'}); h.parentElement.classList.add('pulse'); setTimeout(()=>h.parentElement.classList.remove('pulse'),1200); return }}
+      alert('No match found. Try Dwarka, Somnath, Palitana, Dakor or Ambaji.');
+    });
+
+    // small helper to open affiliate link placeholders (no-op). Replace hrefs in HTML with real affiliate URLs.
+  </script>
+
+  <style>
+    /* tiny pulse effect used by search */
+    .pulse{box-shadow:0 0 0 6px rgba(106,209,255,0.06);transform:translateY(-4px);transition:all 350ms}
+  </style>
+</body>
+</html>
